@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "scripts": {
       "lint:html": "htmlhint '**/*.html'",
-      "lint:css": "stylelint '**/*.css'",
-      "build": "parcel build src/index.html --out-dir dist --no-cache"
+  "lint:css": "stylelint '**/*.css'",
+  "build": "parcel build src/homePage.html --dist-dir dist --no-cache"
     },
     "devDependencies": {
       "htmlhint": "^1.1.4",
@@ -12,3 +12,5 @@
       "stylelint": "^15.0.0"
     }
   }
+
+
