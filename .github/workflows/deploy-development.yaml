@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build the static website using Parcel
-        run: npx parcel build src/homePage.html --dist-dir dist --no-cache
+        run: npx parcel build homePage.html --dist-dir dist --no-cache
 
       - name: Upload build artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
@@ -32,6 +32,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      id-token: write 
+      pages: write    
+      contents: read  
 
     steps:
       - name: Deploy to GitHub Pages
