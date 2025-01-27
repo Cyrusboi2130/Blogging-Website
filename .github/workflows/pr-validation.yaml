@@ -6,21 +6,42 @@ on:
       - develop
 
 jobs:
-  
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install HTMLHint and Stylelint
-      run: |
-        sudo apt-get install -y npm  # Install npm package manager
-        sudo npm install -g htmlhint stylelint  # Install HTMLHint and Stylelint globally
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-    - name: Lint HTML files with HTMLHint
-      run: htmlhint "**/*.html"  
+      - name: Install dependencies
+        run: npm install
 
-    - name: Lint CSS files with Stylelint
-      run: stylelint "**/*.css"  
+      - name: Lint HTML files with HTMLHint
+        run: npx htmlhint "**/*.html" --config .htmlhintrc
+
+      - name: Lint CSS files with Stylelint
+        run: npx stylelint "**/*.css"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the static website using Parcel
+        run: npx parcel build src/index.html --out-dir dist --no-cache
