@@ -1,0 +1,26 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install HTMLHint and Stylelint
+      run: |
+        sudo apt-get install -y npm  # Install npm package manager
+        sudo npm install -g htmlhint stylelint  # Install HTMLHint and Stylelint globally
+
+    - name: Lint HTML files with HTMLHint
+      run: htmlhint "**/*.html"  
+
+    - name: Lint CSS files with Stylelint
+      run: stylelint "**/*.css"  
