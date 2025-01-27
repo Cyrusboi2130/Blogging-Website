@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Parcel
+      run: sudo apt-get install -y parcel 
+
+    - name: Build the static website using Parcel
+      run: |
+        parcel build src/index.html --out-dir dist --no-cache  # Build the static website and output to the dist folder
+
+    - name: Upload build artifact to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: dist  
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build 
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+      with:
+        branch: gh-pages  
